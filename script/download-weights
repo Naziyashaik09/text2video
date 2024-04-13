@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+
+import os
+import shutil
+import torch
+from diffusers import DiffusionPipeline
+
+MODEL_CACHE = "model-cache"
+TMP_CACHE = "tmp-cache"
+
+if os.path.exists(MODEL_CACHE):
+    shutil.rmtree(MODEL_CACHE)
+os.makedirs(MODEL_CACHE, exist_ok=True)
+
+pipe = DiffusionPipeline.from_pretrained(
+    "cerspense/zeroscope_v2_XL",
+    torch_dtype=torch.float16,
+    cache_dir=TMP_CACHE,
+)
+
+pipe.save_pretrained(MODEL_CACHE + "/xl")
+
+pipe = DiffusionPipeline.from_pretrained(
+    "cerspense/zeroscope_v2_576w",
+    torch_dtype=torch.float16,
+    cache_dir=TMP_CACHE,
+)
+
+pipe.save_pretrained(MODEL_CACHE + "/576w")
+
+pipe = DiffusionPipeline.from_pretrained(
+    "camenduru/potat1",
+    torch_dtype=torch.float16,
+    cache_dir=TMP_CACHE,
+)
+
+pipe.save_pretrained(MODEL_CACHE + "/potat1")
+
+pipe = DiffusionPipeline.from_pretrained(
+    "strangeman3107/animov-512x",
+    torch_dtype=torch.float16,
+    cache_dir=TMP_CACHE,
+)
+
+pipe.save_pretrained(MODEL_CACHE + "/animov-512x")
+
+shutil.rmtree(TMP_CACHE)
